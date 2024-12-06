@@ -4,7 +4,6 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// Register
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -12,7 +11,6 @@ router.post("/register", async (req, res) => {
     const user = new User({ username, email, password });
     await user.save();
 
-    // Generate JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
     res.status(201).json({ token, user: { username: user.username, totalScore: user.totalScore } });
   } catch (error) {
@@ -20,7 +18,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
