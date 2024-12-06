@@ -58,4 +58,24 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+router.post("/submit/:id", authenticate, async (req, res) => {
+	const { score } = req.body;
+	const { id } = req.user;
+  
+	try {
+	  const quiz = await Quiz.findById(req.params.id);
+	  if (!quiz) return res.status(404).json({ message: "Quiz not found" });
+  
+	  const user = await User.findById(id);
+	  if (!user) return res.status(404).json({ message: "User not found" });
+  
+	  user.totalScore += score;
+	  await user.save();
+  
+	  res.json({ message: "Quiz submitted successfully", totalScore: user.totalScore });
+	} catch (error) {
+	  res.status(500).json({ error: error.message });
+	}
+  });
+
 export default router
