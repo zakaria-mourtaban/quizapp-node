@@ -1,6 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-
+import jwt from "jsonwebtoken"
+import User from "../models/User.js"
 const authenticate = async (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
